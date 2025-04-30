@@ -18,6 +18,10 @@ public class Lead extends Auditable {
     private String email;
     private String phone;
 
+    private String company;
+
+    private String description;
+
     @Embedded
     private Address address;
 }
