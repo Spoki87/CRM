@@ -14,11 +14,19 @@ public class Lead extends Auditable {
     private UUID id;
 
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String phone;
 
     private String company;
+
+    @Enumerated(EnumType.STRING)
+    private LeadStatus status;
 
     private String description;
 
