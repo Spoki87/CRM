@@ -1,7 +1,10 @@
 package com.crm.module.lead.service;
 
 import com.crm.exception.domain.ResourceNotFoundException;
+import com.crm.exception.domain.UserNotFoundException;
+import com.crm.module.company.model.Company;
 import com.crm.module.company.repository.CompanyRepository;
+import com.crm.module.contact.model.Contact;
 import com.crm.module.contact.repository.ContactRepository;
 import com.crm.module.lead.dto.request.CreateLeadRequest;
 import com.crm.module.lead.dto.request.UpdateLeadRequest;
@@ -12,6 +15,8 @@ import com.crm.module.lead.mapper.LeadMapper;
 import com.crm.module.lead.model.Lead;
 import com.crm.module.lead.model.LeadStatus;
 import com.crm.module.lead.repository.LeadRepository;
+import com.crm.user.appuser.model.User;
+import com.crm.user.appuser.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +33,15 @@ public class LeadService {
     private final LeadRepository leadRepository;
     private final LeadMapper leadMapper;
 
+    private final UserRepository userRepository;
+
     private final ContactRepository contactRepository;
     private final CompanyRepository companyRepository;
 
     public SimpleLeadResponse createLead(CreateLeadRequest request) {
+
+        User owner = userRepository.findById(request.getOwnerId()).orElseThrow(UserNotFoundException::new);
+
         Lead lead = new Lead(
                 request.getFirstName(),
                 request.getLastName(),
@@ -40,7 +50,8 @@ public class LeadService {
                 request.getCompany(),
                 request.getDescription(),
                 request.getAddress(),
-                request.getSource()
+                request.getSource(),
+                owner
         );
         leadRepository.save(lead);
         return leadMapper.fromLeadToSimpleLeadResponse(lead);
@@ -61,6 +72,9 @@ public class LeadService {
     public SimpleLeadResponse updateLead(UUID id, UpdateLeadRequest request) {
         Lead lead = leadRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
+
+        User owner = userRepository.findById(request.getOwnerId()).orElseThrow(UserNotFoundException::new);
+
         lead.update(
                 request.getFirstName(),
                 lead.getLastName(),
@@ -69,7 +83,8 @@ public class LeadService {
                 request.getCompany(),
                 request.getDescription(),
                 request.getAddress(),
-                request.getSource()
+                request.getSource(),
+                owner
         );
 
          return leadMapper.fromLeadToSimpleLeadResponse(lead);
@@ -82,16 +97,31 @@ public class LeadService {
         leadRepository.delete(lead);
     }
 
+    @Transactional
     public ConvertedLeadResponse convert(UUID id) {
         Lead lead = leadRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
 
-        /*
-            to do
-            create contact
-            create company
-            update lead
-        */
+        Company company = companyRepository.findByName(lead.getCompany())
+                .orElseGet(() -> {
+                    Company newCompany = new Company(lead.getCompany(), lead.getOwner());
+                    return companyRepository.save(newCompany);
+                });
+
+        Contact contact = new Contact(
+                company,
+                lead.getFirstName(),
+                lead.getLastName(),
+                lead.getEmail(),
+                lead.getAddress(),
+                lead.getPhone(),
+                lead.getDescription(),
+                lead.getOwner()
+        );
+
+        contactRepository.save(contact);
+
+        lead.setAsConverted(contact);
 
         return leadMapper.fromLeadToConvertedLeadResponse(lead);
     }

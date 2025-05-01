@@ -23,7 +23,11 @@ public class LeadMapper {
                 lead.getAddress(),
                 lead.getDescription(),
                 lead.isConverted(),
-                lead.getContactId()
+                lead.getContactId(),
+                lead.getCreatedTime(),
+                lead.getUpdatedTime(),
+                lead.getCreatedBy().getId(),
+                lead.getUpdatedBy().getId()
         );
     }
 

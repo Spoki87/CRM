@@ -4,10 +4,13 @@ import com.crm.model.Address;
 import com.crm.module.lead.model.LeadSource;
 import com.crm.module.lead.model.LeadStatus;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
+@Getter
 public class LeadResponse {
     private UUID id;
 
@@ -34,4 +37,12 @@ public class LeadResponse {
     private boolean isConverted;
 
     private UUID contactId;
+
+    private LocalDateTime createdTime;
+
+    private LocalDateTime updatedTime;
+
+    private UUID createdBy;
+
+    private UUID modifiedBy;
 }

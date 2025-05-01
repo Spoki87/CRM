@@ -30,7 +30,7 @@ public class LeadController {
     private final LeadService leadService;
 
     @PostMapping()
-    ResponseEntity<Response<SimpleLeadResponse>> createLead(@Valid CreateLeadRequest request){
+    ResponseEntity<Response<SimpleLeadResponse>> createLead(@Valid @RequestBody CreateLeadRequest request){
         SimpleLeadResponse response = leadService.createLead(request);
         return ResponseEntity.ok(Response.success("Created successfully",response, HttpStatus.CREATED));
     }
@@ -48,7 +48,7 @@ public class LeadController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Response<SimpleLeadResponse>> updateLead(@Valid UpdateLeadRequest request, @PathVariable UUID id){
+    ResponseEntity<Response<SimpleLeadResponse>> updateLead(@Valid @RequestBody UpdateLeadRequest request, @PathVariable UUID id){
         SimpleLeadResponse response = leadService.updateLead(id, request);
         return ResponseEntity.ok(Response.success("Updated successfully",response, HttpStatus.OK));
     }

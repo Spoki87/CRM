@@ -1,7 +1,7 @@
-package com.crm.module.lead.dto.request;
+package com.crm.module.company.dto.request;
 
 import com.crm.model.Address;
-import com.crm.module.lead.model.LeadSource;
+import com.crm.module.company.model.CompanyType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,14 +10,11 @@ import lombok.Value;
 import java.util.UUID;
 
 @Value
-public class CreateLeadRequest {
+public class UpdateCompanyRequest {
 
     @Size(max = 255, message = "Limit characters is 225")
-    String firstName;
-
-    @NotBlank(message = "Last name is required")
-    @Size(max = 255, message = "Limit characters is 225")
-    String lastName;
+    @NotBlank(message = "Company name is required")
+    String name;
 
     @Size(max = 255, message = "Limit characters is 225")
     @Email(message = "Invalid email format")
@@ -25,15 +22,23 @@ public class CreateLeadRequest {
 
     String phone;
 
-    @Size(max = 255, message = "Limit characters is 225")
-    String company;
+    @NotBlank(message = "Tax identification number is required")
+    String taxIdentificationNumber;
 
-    LeadSource source;
+    CompanyType type;
 
-    Address address;
+    String industry;
 
-    UUID ownerId;
+    String website;
+
+    int numberOfEmployees;
 
     @Size(message = "Description limit characters is 500", max = 500)
     String description;
+
+    Address billingAddress;
+
+    Address shippingAddress;
+
+    UUID ownerId;
 }

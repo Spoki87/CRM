@@ -4,6 +4,7 @@ import com.crm.exception.domain.IllegalTransitionException;
 import com.crm.model.Address;
 import com.crm.model.Auditable;
 import com.crm.module.contact.model.Contact;
+import com.crm.user.appuser.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,13 +42,17 @@ public class Lead extends Auditable {
 
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
     private boolean isConverted;
 
     @OneToOne
     @JoinColumn(name = "contact_id")
     private Contact contact;
 
-    public Lead(String firstName, String lastName, String email, String phone, String company, String description, Address address,LeadSource source) {
+    public Lead(String firstName, String lastName, String email, String phone, String company, String description, Address address,LeadSource source, User owner) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -59,13 +64,14 @@ public class Lead extends Auditable {
         this.source = source;
         this.isConverted = false;
         this.contact = null;
+        this.owner = owner;
     }
 
     public UUID getContactId() {
         return contact != null ? contact.getId() : null;
     }
 
-    public void update(String firstName, String lastName, String email, String phone, String company, String description, Address address,LeadSource source){
+    public void update(String firstName, String lastName, String email, String phone, String company, String description, Address address,LeadSource source, User owner){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -74,6 +80,7 @@ public class Lead extends Auditable {
         this.description = description;
         this.address = address;
         this.source = source;
+        this.owner = owner;
     }
 
     public void transitionTo(LeadStatus newStatus) {
@@ -81,5 +88,11 @@ public class Lead extends Auditable {
             throw new IllegalTransitionException("Illegal transition from " + this.status + " to " + newStatus);
         }
         this.status = newStatus;
+    }
+
+    public void setAsConverted(Contact contact){
+        this.contact = contact;
+        this.isConverted = true;
+        this.status = LeadStatus.CONVERTED;
     }
 }
