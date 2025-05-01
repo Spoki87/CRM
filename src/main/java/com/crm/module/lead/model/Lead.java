@@ -65,6 +65,17 @@ public class Lead extends Auditable {
         return contact != null ? contact.getId() : null;
     }
 
+    public void update(String firstName, String lastName, String email, String phone, String company, String description, Address address,LeadSource source){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.company = company;
+        this.description = description;
+        this.address = address;
+        this.source = source;
+    }
+
     public void transitionTo(LeadStatus newStatus) {
         if (!this.status.canTransitionTo(newStatus)) {
             throw new IllegalTransitionException("Illegal transition from " + this.status + " to " + newStatus);

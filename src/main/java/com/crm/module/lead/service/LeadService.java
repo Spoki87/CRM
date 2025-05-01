@@ -1,7 +1,8 @@
 package com.crm.module.lead.service;
 
-import com.crm.exception.domain.IllegalTransitionException;
 import com.crm.exception.domain.ResourceNotFoundException;
+import com.crm.module.company.repository.CompanyRepository;
+import com.crm.module.contact.repository.ContactRepository;
 import com.crm.module.lead.dto.request.CreateLeadRequest;
 import com.crm.module.lead.dto.request.UpdateLeadRequest;
 import com.crm.module.lead.dto.response.ConvertedLeadResponse;
@@ -27,8 +28,22 @@ public class LeadService {
     private final LeadRepository leadRepository;
     private final LeadMapper leadMapper;
 
+    private final ContactRepository contactRepository;
+    private final CompanyRepository companyRepository;
+
     public SimpleLeadResponse createLead(CreateLeadRequest request) {
-        return null;
+        Lead lead = new Lead(
+                request.getFirstName(),
+                request.getLastName(),
+                request.getEmail(),
+                request.getPhone(),
+                request.getCompany(),
+                request.getDescription(),
+                request.getAddress(),
+                request.getSource()
+        );
+        leadRepository.save(lead);
+        return leadMapper.fromLeadToSimpleLeadResponse(lead);
     }
 
     public LeadResponse getLead(UUID id) {
@@ -42,10 +57,22 @@ public class LeadService {
                 .map(leadMapper::fromLeadToLeadResponse);
     }
 
+    @Transactional
     public SimpleLeadResponse updateLead(UUID id, UpdateLeadRequest request) {
         Lead lead = leadRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        return null;
+        lead.update(
+                request.getFirstName(),
+                lead.getLastName(),
+                request.getEmail(),
+                request.getPhone(),
+                request.getCompany(),
+                request.getDescription(),
+                request.getAddress(),
+                request.getSource()
+        );
+
+         return leadMapper.fromLeadToSimpleLeadResponse(lead);
     }
 
     @Transactional
@@ -58,6 +85,13 @@ public class LeadService {
     public ConvertedLeadResponse convert(UUID id) {
         Lead lead = leadRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
+
+        /*
+            to do
+            create contact
+            create company
+            update lead
+        */
 
         return leadMapper.fromLeadToConvertedLeadResponse(lead);
     }
