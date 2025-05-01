@@ -3,10 +3,12 @@ package com.crm.module.contact.model;
 import com.crm.model.Address;
 import com.crm.module.company.model.Company;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.UUID;
 
 @Entity
+@Getter
 public class Contact {
 
     @Id

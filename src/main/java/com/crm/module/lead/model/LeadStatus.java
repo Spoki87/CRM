@@ -21,4 +21,9 @@ public enum LeadStatus {
     public boolean canTransitionTo(LeadStatus next) {
         return transitions.getOrDefault(this, Set.of()).contains(next);
     }
+
+    public Set<LeadStatus> getAvailableTransitions() {
+        return transitions.getOrDefault(this, Set.of());
+    }
+
 }

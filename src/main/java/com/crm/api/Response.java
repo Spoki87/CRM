@@ -27,7 +27,7 @@ public class Response<T> {
     }
 
     public static <T> Response<T> success(String message, T data, HttpStatus httpStatus){
-        return new Response<>(message,data, HttpStatus.OK);
+        return new Response<>(message,data, httpStatus);
     }
 
     public static <T> Response<T> error(String message, HttpStatus status) {
