@@ -8,6 +8,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 public class SimpleContactResponse {
-    private String fullName;
     private UUID id;
+    private String fullName;
 }

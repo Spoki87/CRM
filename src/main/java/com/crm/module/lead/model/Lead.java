@@ -30,6 +30,7 @@ public class Lead extends Auditable {
 
     private String phone;
 
+    @Column(nullable = false)
     private String company;
 
     @Enumerated(EnumType.STRING)

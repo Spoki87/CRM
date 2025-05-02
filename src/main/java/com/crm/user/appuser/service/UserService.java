@@ -52,15 +52,16 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public UserResponse deactivateUser(UUID id) {
+    public void deactivateUser(UUID id) {
 
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
 
         user.block();
 
         userRepository.save(user);
 
-        return new UserResponse(
+        new UserResponse(
                 user.getId(),
                 user.getEmail(),
                 user.getRole()

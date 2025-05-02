@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(registry->{
                     registry.requestMatchers("/api/auth/**").permitAll();
-                    registry.requestMatchers("api/user/**").hasRole("SUPER_ADMIN");
+                    registry.requestMatchers("/api/user/**").hasRole("SUPER_ADMIN");
                     registry.requestMatchers(
                             "/swagger-ui/**",
                             "/v3/api-docs/**",

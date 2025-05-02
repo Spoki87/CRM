@@ -54,7 +54,7 @@ public class LeadController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Response<String>> deleteLead(@PathVariable UUID id){
+    ResponseEntity<Response<Void>> deleteLead(@PathVariable UUID id){
         leadService.delete(id);
         return ResponseEntity.ok(Response.success("Deleted successfully",null,HttpStatus.OK));
     }
@@ -72,7 +72,7 @@ public class LeadController {
     }
 
     @PostMapping("transition/{id}")
-    ResponseEntity<Response<String>> statusTransition(@PathVariable UUID id,@RequestParam LeadStatus status){
+    ResponseEntity<Response<Void>> statusTransition(@PathVariable UUID id,@RequestParam LeadStatus status){
         leadService.statusTransition(id,status);
         return ResponseEntity.ok(Response.success("Status transition successfully",null,HttpStatus.OK));
     }

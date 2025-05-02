@@ -73,7 +73,11 @@ public class LeadService {
         Lead lead = leadRepository.findById(id)
                 .orElseThrow(ResourceNotFoundException::new);
 
-        User owner = userRepository.findById(request.getOwnerId()).orElseThrow(UserNotFoundException::new);
+        User owner = null;
+        if (request.getOwnerId() != null) {
+            owner = userRepository.findById(request.getOwnerId())
+                    .orElseThrow(UserNotFoundException::new);
+        }
 
         lead.update(
                 request.getFirstName(),

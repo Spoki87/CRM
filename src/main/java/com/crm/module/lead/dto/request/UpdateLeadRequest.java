@@ -14,20 +14,22 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateLeadRequest {
 
-    @Size(max = 255, message = "Limit characters is 225")
+    @Size(max = 255, message = "First name limit characters is 225")
     String firstName;
 
     @NotBlank(message = "Last name is required")
-    @Size(max = 255, message = "Limit characters is 225")
+    @Size(max = 255, message = "Last name limit characters is 225")
     String lastName;
 
     @Email(message = "Invalid email format")
-    @Size(max = 255, message = "Limit characters is 225")
+    @Size(max = 255, message = "Email limit characters is 225")
     String email;
 
+    @Size(max = 255, message = "Phone limit characters is 225")
     String phone;
 
     @Size(max = 255, message = "Limit characters is 225")
+    @NotBlank(message = "Company is required")
     String company;
 
     LeadSource source;
