@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +44,8 @@ public class LeadController {
 
     @GetMapping()
     ResponseEntity<Response<Page<LeadResponse>>> getLeads(@RequestParam(defaultValue = "0") int page){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getAuthorities());
         Pageable pageable = PageRequest.of(page, 200);
         Page<LeadResponse> response = leadService.getLeads(pageable);
         return ResponseEntity.ok(Response.success("Retrieved successfully",response, HttpStatus.OK));

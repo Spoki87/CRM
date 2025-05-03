@@ -1,5 +1,6 @@
 package com.crm.user.security;
 
+import com.crm.user.appuser.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(registry->{
                     registry.requestMatchers("/api/auth/**").permitAll();
-                    registry.requestMatchers("/api/user/**").hasRole("SUPER_ADMIN");
+                    registry.requestMatchers("/api/users/**").hasRole("SUPER_ADMIN");
                     registry.requestMatchers(
                             "/swagger-ui/**",
                             "/v3/api-docs/**",

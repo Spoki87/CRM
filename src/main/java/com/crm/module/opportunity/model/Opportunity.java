@@ -1,5 +1,6 @@
 package com.crm.module.opportunity.model;
 
+import com.crm.exception.domain.IllegalTransitionException;
 import com.crm.model.Auditable;
 import com.crm.module.company.model.Company;
 import com.crm.module.contact.model.Contact;
@@ -8,7 +9,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -27,7 +27,7 @@ public class Opportunity extends Auditable {
 
     private String description;
 
-    private BigDecimal value;
+    private double value;
 
     private LocalDate dueDate;
 
@@ -48,4 +48,54 @@ public class Opportunity extends Auditable {
     @JoinColumn(name = "owner_id")
     private User owner;
 
+    public Opportunity(String number, String title, String description, double value, LocalDate dueDate, Company company, Contact contact, User owner) {
+        this.number = number;
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.dueDate = dueDate;
+        this.company = company;
+        this.contact = contact;
+        this.owner = owner;
+        this.stage = OpportunityStage.NEW;
+    }
+
+    public void update(String title, String description, double value, LocalDate dueDate, Company company, Contact contact, User owner) {
+        this.title = title;
+        this.description = description;
+        this.value = value;
+        this.dueDate = dueDate;
+        this.company = company;
+        this.contact = contact;
+        this.owner = owner;
+    }
+
+    public void transitionTo(OpportunityStage stage){
+        if(!this.stage.canTransitionTo(stage)){
+             throw new IllegalTransitionException("Illegal transition from " + stage + " to " + stage);
+        }
+        this.stage = stage;
+    }
+
+    public void closeOpportunity(LocalDate closedDate, boolean isClosedSuccessful) {
+        this.closedDate = closedDate;
+        if(isClosedSuccessful){
+            this.stage = OpportunityStage.WON;
+        }else{
+            this.stage = OpportunityStage.LOST;
+        }
+    }
+
+    public UUID getContactId() {
+        return contact != null ? contact.getId() : null;
+
+    }
+
+    public UUID getCompanyId() {
+        return company != null ? company.getId() : null;
+    }
+
+    public UUID getOwnerId() {
+        return owner != null ? owner.getId() : null;
+    }
 }

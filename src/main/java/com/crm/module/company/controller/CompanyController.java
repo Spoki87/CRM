@@ -52,7 +52,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Response<String>> deleteCompany(@PathVariable UUID id) {
+    ResponseEntity<Response<Void>> deleteCompany(@PathVariable UUID id) {
         companyService.delete(id);
         return ResponseEntity.ok(Response.success("Deleted successfully", null, HttpStatus.OK));
     }

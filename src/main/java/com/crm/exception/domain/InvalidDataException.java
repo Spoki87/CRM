@@ -1,4 +1,9 @@
 package com.crm.exception.domain;
 
-public class InvalidDataException {
+import com.crm.exception.business.BusinessException;
+
+public class InvalidDataException extends BusinessException {
+    public InvalidDataException(String message) {
+        super(message);
+    }
 }

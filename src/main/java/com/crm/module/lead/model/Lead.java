@@ -59,13 +59,13 @@ public class Lead extends Auditable {
         this.email = email;
         this.phone = phone;
         this.company = company;
-        this.status = LeadStatus.NEW;
         this.description = description;
         this.address = address;
         this.source = source;
         this.isConverted = false;
         this.contact = null;
         this.owner = owner;
+        this.status = LeadStatus.NEW;
     }
 
     public UUID getContactId() {

@@ -13,7 +13,7 @@ public enum LeadStatus {
     private static final Map<LeadStatus, Set<LeadStatus>> transitions = Map.of(
             NEW, Set.of(CONTACTED, IN_PROGRESS),
             IN_PROGRESS, Set.of(CONVERTED, LOST),
-            CONTACTED, Set.of(IN_PROGRESS, LOST),
+            CONTACTED, Set.of(IN_PROGRESS, LOST,CONTACTED),
             LOST, Set.of(),
             CONVERTED, Set.of()
     );
