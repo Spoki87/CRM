@@ -39,6 +39,7 @@ public class SecurityConfig {
                     ).permitAll();
                     registry.anyRequest().authenticated();
                 })
+                .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authenticationManagerConfig.authenticationProvider())
                 .build();
     }
