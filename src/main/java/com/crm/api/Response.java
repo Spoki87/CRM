@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 
 @Getter
-public class Response<T> {
+public class Response{
 
     private final int status;
     private final String message;
@@ -17,20 +17,20 @@ public class Response<T> {
     private final LocalDateTime timestamp;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final T data;
+    private final Object data;
 
-    private Response(String message, T data, HttpStatus httpStatus){
+    private Response(String message, Object data, HttpStatus httpStatus){
         this.timestamp = LocalDateTime.now();
         this.message = message;
         this.data = data;
         this.status = httpStatus.value();
     }
 
-    public static <T> Response<T> success(String message, T data, HttpStatus httpStatus){
-        return new Response<>(message,data, httpStatus);
+    public static Response success(String message, Object data, HttpStatus httpStatus){
+        return new Response(message,data, httpStatus);
     }
 
-    public static <T> Response<T> error(String message, HttpStatus status) {
-        return new Response<>(message, null, status);
+    public static Response error(String message, HttpStatus status) {
+        return new Response(message, null, status);
     }
 }

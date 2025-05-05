@@ -14,37 +14,38 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Response<String>> handleBusinessException(Exception ex) {
-        return buildError(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Response> handleBusinessException(Exception ex) {
+        return buildError(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, "error");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Response<String>> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Response> handleValidationException(MethodArgumentNotValidException ex) {
         String errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(e -> e.getField() + ": " + Objects.requireNonNull(e.getDefaultMessage()))
                 .collect(Collectors.joining("; "));
-        return buildError(errors, HttpStatus.BAD_REQUEST);
+        return buildError(errors, HttpStatus.BAD_REQUEST, "validationErrors");
     }
 
     @ExceptionHandler(InvalidFormatException.class)
-    public ResponseEntity<Response<String>> handleInvalidEnumValue(InvalidFormatException ex) {
+    public ResponseEntity<Response> handleInvalidEnumValue(InvalidFormatException ex) {
         String message = "Invalid value provided";
         if (ex.getTargetType().isEnum() && !ex.getPath().isEmpty()) {
             String fieldName = ex.getPath().get(0).getFieldName();
             message = String.format("Invalid value '%s' for field '%s'", ex.getValue(), fieldName);
         }
-        return buildError(message, HttpStatus.BAD_REQUEST);
+        return buildError(message, HttpStatus.BAD_REQUEST, "invalidEnumValue");
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Response<String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-        return buildError("Duplicate entry error", HttpStatus.CONFLICT);
+    public ResponseEntity<Response> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        return buildError("Duplicate entry error", HttpStatus.CONFLICT, "dataIntegrityViolation");
     }
 
-    private ResponseEntity<Response<String>> buildError(String message, HttpStatus status) {
+    private ResponseEntity<Response> buildError(String message, HttpStatus status, String dataKey) {
         return ResponseEntity.status(status).body(Response.error(message, status));
     }
 }

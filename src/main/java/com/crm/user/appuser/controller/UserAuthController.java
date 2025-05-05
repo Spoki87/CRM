@@ -26,13 +26,13 @@ public class UserAuthController {
     private final HttpSession httpSession;
 
     @PostMapping("/login")
-    public ResponseEntity<Response<Void>> authenticate(@Valid @RequestBody AuthenticateUserRequest request) {
+    public ResponseEntity<Response> authenticate(@Valid @RequestBody AuthenticateUserRequest request) {
         authService.authenticate(request);
         return ResponseEntity.ok(Response.success("Authenticated successfully",null, HttpStatus.OK));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Response<Void>> logout() {
+    public ResponseEntity<Response> logout() {
         httpSession.invalidate();
         return ResponseEntity.ok(Response.success("Logged out successfully", null, HttpStatus.OK));
     }

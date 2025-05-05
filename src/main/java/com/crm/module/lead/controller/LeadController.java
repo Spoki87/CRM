@@ -32,18 +32,18 @@ public class LeadController {
     private final LeadService leadService;
 
     @PostMapping()
-    ResponseEntity<Response<SimpleLeadResponse>> createLead(@Valid @RequestBody CreateLeadRequest request){
+    ResponseEntity<Response> createLead(@Valid @RequestBody CreateLeadRequest request){
         SimpleLeadResponse response = leadService.createLead(request);
         return ResponseEntity.ok(Response.success("Created successfully",response, HttpStatus.CREATED));
     }
     @GetMapping("/{id}")
-    ResponseEntity<Response<LeadResponse>> getLeadById(@PathVariable UUID id){
+    ResponseEntity<Response> getLeadById(@PathVariable UUID id){
         LeadResponse response = leadService.getLead(id);
         return ResponseEntity.ok(Response.success("Retrieved successfully",response, HttpStatus.OK));
     }
 
     @GetMapping()
-    ResponseEntity<Response<Page<LeadResponse>>> getLeads(@RequestParam(defaultValue = "0") int page){
+    ResponseEntity<Response> getLeads(@RequestParam(defaultValue = "0") int page){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication.getAuthorities());
         Pageable pageable = PageRequest.of(page, 200);
@@ -52,31 +52,31 @@ public class LeadController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Response<SimpleLeadResponse>> updateLead(@Valid @RequestBody UpdateLeadRequest request, @PathVariable UUID id){
+    ResponseEntity<Response> updateLead(@Valid @RequestBody UpdateLeadRequest request, @PathVariable UUID id){
         SimpleLeadResponse response = leadService.updateLead(id, request);
         return ResponseEntity.ok(Response.success("Updated successfully",response, HttpStatus.OK));
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Response<Void>> deleteLead(@PathVariable UUID id){
+    ResponseEntity<Response> deleteLead(@PathVariable UUID id){
         leadService.delete(id);
         return ResponseEntity.ok(Response.success("Deleted successfully",null,HttpStatus.OK));
     }
 
     @PostMapping("/convert/{id}")
-    ResponseEntity<Response<ConvertedLeadResponse>> convertLead(@PathVariable UUID id){
+    ResponseEntity<Response> convertLead(@PathVariable UUID id){
         ConvertedLeadResponse response = leadService.convert(id);
         return ResponseEntity.ok(Response.success("Converted successfully",response, HttpStatus.OK));
     }
 
     @GetMapping("/transitions/{id}")
-    ResponseEntity<Response<List<LeadStatus>>> getAvailableTransitions(@PathVariable UUID id){
+    ResponseEntity<Response> getAvailableTransitions(@PathVariable UUID id){
         List<LeadStatus> response = leadService.getAvailableTransitions(id);
         return ResponseEntity.ok(Response.success("Retrieved successfully",response, HttpStatus.OK));
     }
 
     @PostMapping("transition/{id}")
-    ResponseEntity<Response<Void>> statusTransition(@PathVariable UUID id,@RequestParam LeadStatus status){
+    ResponseEntity<Response> statusTransition(@PathVariable UUID id,@RequestParam LeadStatus status){
         leadService.statusTransition(id,status);
         return ResponseEntity.ok(Response.success("Status transition successfully",null,HttpStatus.OK));
     }

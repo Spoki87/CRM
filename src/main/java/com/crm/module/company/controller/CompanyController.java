@@ -27,32 +27,32 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping()
-    public ResponseEntity<Response<SimpleCompanyResponse>> createCompany(@Validated @RequestBody CreateCompanyRequest request) {
+    public ResponseEntity<Response> createCompany(@Validated @RequestBody CreateCompanyRequest request) {
         SimpleCompanyResponse response = companyService.createCompany(request);
         return ResponseEntity.ok(Response.success("Created successfully", response, HttpStatus.CREATED));
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Response<CompanyResponse>> getCompanyById(@PathVariable UUID id) {
+    ResponseEntity<Response> getCompanyById(@PathVariable UUID id) {
         CompanyResponse response = companyService.getCompany(id);
         return ResponseEntity.ok(Response.success("Get successfully", response, HttpStatus.OK));
     }
 
     @GetMapping()
-    ResponseEntity<Response<Page<CompanyResponse>>> getCompanies(@RequestParam(defaultValue = "0") int page) {
+    ResponseEntity<Response> getCompanies(@RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 200);
         Page<CompanyResponse> response = companyService.getCompanies(pageable);
         return ResponseEntity.ok(Response.success("Retrieved successfully", response, HttpStatus.OK));
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Response<SimpleCompanyResponse>> updateCompany(@Valid @RequestBody UpdateCompanyRequest request, @PathVariable UUID id) {
+    ResponseEntity<Response> updateCompany(@Valid @RequestBody UpdateCompanyRequest request, @PathVariable UUID id) {
         SimpleCompanyResponse response = companyService.update(id, request);
         return ResponseEntity.ok(Response.success("Updated successfully", response, HttpStatus.OK));
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Response<Void>> deleteCompany(@PathVariable UUID id) {
+    ResponseEntity<Response> deleteCompany(@PathVariable UUID id) {
         companyService.delete(id);
         return ResponseEntity.ok(Response.success("Deleted successfully", null, HttpStatus.OK));
     }

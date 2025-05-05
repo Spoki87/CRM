@@ -29,50 +29,50 @@ public class OpportunityController {
     private final OpportunityService opportunityService;
 
     @PostMapping()
-    public ResponseEntity<Response<SimpleOpportunityResponse>> createOpportunity(@Validated @RequestBody CreateOpportunityRequest request){
+    public ResponseEntity<Response> createOpportunity(@Validated @RequestBody CreateOpportunityRequest request){
         SimpleOpportunityResponse response = opportunityService.createOpportunity(request);
         return ResponseEntity.ok(Response.success("Created successfully",response, HttpStatus.CREATED));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<OpportunityResponse>> getOpportunityById(@PathVariable UUID id){
+    public ResponseEntity<Response> getOpportunityById(@PathVariable UUID id){
         OpportunityResponse response = opportunityService.getOpportunity(id);
         return ResponseEntity.ok(Response.success("Retrieved successfully",response, HttpStatus.OK));
     }
 
     @GetMapping()
-    ResponseEntity<Response<Page<OpportunityResponse>>> getOpportunities(@RequestParam(defaultValue = "0") int page){
+    ResponseEntity<Response> getOpportunities(@RequestParam(defaultValue = "0") int page){
         Pageable pageable = PageRequest.of(page, 200);
         Page<OpportunityResponse> response = opportunityService.getOpportunities(pageable);
         return ResponseEntity.ok(Response.success("Retrieved successfully",response, HttpStatus.OK));
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Response<SimpleOpportunityResponse>> updateOpportunity(@PathVariable UUID id, @RequestBody UpdateOpportunityRequest request){
+    ResponseEntity<Response> updateOpportunity(@PathVariable UUID id, @RequestBody UpdateOpportunityRequest request){
         SimpleOpportunityResponse response = opportunityService.update(id,request);
         return ResponseEntity.ok(Response.success("Updated successfully",response, HttpStatus.OK));
     }
 
     @GetMapping("/transitions/{id}")
-    ResponseEntity<Response<List<OpportunityStage>>> getAvailableTransitions(@PathVariable UUID id){
+    ResponseEntity<Response> getAvailableTransitions(@PathVariable UUID id){
         List<OpportunityStage> response = opportunityService.getAvailableTransitions(id);
         return ResponseEntity.ok(Response.success("Retrieved successfully",response, HttpStatus.OK));
     }
 
     @PostMapping("/transition/{id}")
-    ResponseEntity<Response<Void>> stageTransition(@PathVariable UUID id, @RequestParam OpportunityStage stage){
+    ResponseEntity<Response> stageTransition(@PathVariable UUID id, @RequestParam OpportunityStage stage){
         opportunityService.transitionStage(id,stage);
         return ResponseEntity.ok(Response.success("Stage transition successfully",null, HttpStatus.OK));
     }
 
     @PostMapping("/close/{id}")
-    ResponseEntity<Response<SimpleOpportunityResponse>> close(@PathVariable UUID id, @RequestBody CloseOpportunityRequest request){
+    ResponseEntity<Response> close(@PathVariable UUID id, @RequestBody CloseOpportunityRequest request){
         SimpleOpportunityResponse response = opportunityService.closeOpportunity(id,request);
         return ResponseEntity.ok(Response.success("Closed successfully",response, HttpStatus.OK));
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Response<Void>> delete(@PathVariable UUID id){
+    ResponseEntity<Response> delete(@PathVariable UUID id){
         opportunityService.delete(id);
         return ResponseEntity.ok(Response.success("Deleted successfully", null, HttpStatus.OK));
     }
