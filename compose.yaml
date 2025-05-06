@@ -14,3 +14,11 @@ services:
     container_name: redis
     ports:
       - '6379:6379'
+  crm:
+    build: .
+    container_name: crm_app
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+      - redis
