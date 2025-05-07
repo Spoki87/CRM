@@ -68,7 +68,6 @@ com.crm
 ├── module
   ├── lead
   ├── contact
-  ├── hotel
   ├── company
   ├── opportunity
   ├── activity
