@@ -1,22 +1,17 @@
 package com.crm.module.activity.task.model;
 
-import com.crm.model.Auditable;
-import com.crm.user.appuser.model.User;
+import com.crm.module.activity.model.Activity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Task extends Auditable {
+@AllArgsConstructor
+public class Task extends Activity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
 
     private String taskName;
 
@@ -25,13 +20,4 @@ public class Task extends Auditable {
     private TaskStatus status;
 
     private LocalDate dueDate;
-
-    @Enumerated(EnumType.STRING)
-    private RelatedModule relatedModule;
-
-    private UUID relatedEntityId;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
 }

@@ -35,7 +35,7 @@ public class CompanyController {
     @GetMapping("/{id}")
     ResponseEntity<Response> getCompanyById(@PathVariable UUID id) {
         CompanyResponse response = companyService.getCompany(id);
-        return ResponseEntity.ok(Response.success("Get successfully", response, HttpStatus.OK));
+        return ResponseEntity.ok(Response.success("Retrieved successfully", response, HttpStatus.OK));
     }
 
     @GetMapping()

@@ -1,4 +1,4 @@
-package com.crm.module.activity.task.model;
+package com.crm.module.activity.model;
 
 public enum RelatedModule {
     LEAD,CONTACT,COMPANY,OPPORTUNITY
