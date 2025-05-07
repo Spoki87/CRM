@@ -35,7 +35,7 @@ REDIS:
 ### Clone and Run the Project
 
 ```bash
-git clone git@github.com:Spoki87/crm.git
+git clone git@github.com:Spoki87/CRM.git
 cd crm
 mvn clean package 
 docker compose up
@@ -56,7 +56,7 @@ The application uses session-based authentication with JSESSIONID tokens managed
 ## 🗂️ Project Structure
 
 ```
-com.reservation
+com.crm
 ├── api 
 ├── config                        
 ├── exception
