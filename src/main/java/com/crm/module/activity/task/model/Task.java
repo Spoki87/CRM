@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Task extends Activity {
 
-
     private String taskName;
 
     private String description;
