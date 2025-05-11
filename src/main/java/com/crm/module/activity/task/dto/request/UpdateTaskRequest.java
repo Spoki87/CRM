@@ -1,6 +1,5 @@
 package com.crm.module.activity.task.dto.request;
 
-import com.crm.module.activity.model.RelatedModule;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +10,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
-public class CreateTaskRequest {
+public class UpdateTaskRequest {
 
     @Size(max = 255, message = "Limit characters is 225")
     @NotBlank(message = "Company name is required")
@@ -23,12 +22,6 @@ public class CreateTaskRequest {
     @NotNull(message = "Due date is required")
     @FutureOrPresent(message = "Due date must be today or in the future")
     LocalDate dueDate;
-
-    @NotNull(message = "Related module is required")
-    RelatedModule relatedModule;
-
-    @NotNull(message = "Related ID is required")
-    UUID relatedId;
 
     @NotNull(message = "Owner ID is required")
     UUID ownerId;
